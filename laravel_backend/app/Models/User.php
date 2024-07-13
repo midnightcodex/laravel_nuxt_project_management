@@ -25,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id'
     ];
 
     /**
@@ -53,5 +54,40 @@ class User extends Authenticatable
     public function projects() : HasMany
     {
         return $this->hasMany(Project::class);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function createdItems()
+    {
+        return $this->hasMany(Item::class, 'created_by');
+    }
+
+    public function assignedItems()
+    {
+        return $this->hasMany(Item::class, 'assigned_to');
+    }
+
+    public function itemCycles()
+    {
+        return $this->hasMany(ItemCycle::class, 'updated_by');
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class, 'employee_id');
+    }
+
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class, 'employee_id');
+    }
+
+    public function auditTrail()
+    {
+        return $this->hasMany(AuditTrail::class, 'user_id');
     }
 }

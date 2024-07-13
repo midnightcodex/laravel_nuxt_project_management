@@ -8,6 +8,12 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\LeadController;
+use App\Http\Controllers\TaskController;
+
+
 // Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 //     return $request->user();
 // });
@@ -21,8 +27,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     ->middleware(['throttle:6,1'])
     ->name('verification.send');
 
-    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
+    // Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    //     ->name('logout');
 
     Route::get("/projects", [ProjectController::class, 'index']);
     Route::post("/project", [ProjectController::class, 'store']);
@@ -43,8 +49,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get("/ticket/{ticket}", [TicketController::class, 'show']);
     Route::put("/ticket/{ticket}", [TicketController::class, 'update']);
     Route::delete("/ticket/{ticket}", [TicketController::class, 'destroy']);
-    
-    
+
+
     Route::post("/ticket/{ticket}/move", [TicketController::class, 'move']);
     Route::post("/ticket/{ticket}/assign", [TicketController::class, 'assign']);
+
+    Route::apiResource('roles', RoleController::class);
+    Route::apiResource('permissions', PermissionController::class);
+    Route::apiResource('leads', LeadController::class);
+    Route::apiResource('tasks', TaskController::class);
+    
 });
